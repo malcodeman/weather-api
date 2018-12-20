@@ -23,6 +23,7 @@ func GetLocation(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	}
 
 	fmt.Println(resp.String())
+	w.Write([]byte(resp.String()))
 }
 
 func main() {
