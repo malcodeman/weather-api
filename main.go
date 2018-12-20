@@ -14,6 +14,8 @@ import (
 // GetLocation returns user physical location information
 func GetLocation(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	ipstackAPIKey := os.Getenv("IPSTACK_API_KEY")
 
 	resp, err := grequests.Get("http://api.ipstack.com/check?access_key="+ipstackAPIKey, nil)
@@ -29,6 +31,7 @@ func GetLocation(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 // GetForecast returns forecast data based on latitude and longitude
 func GetForecast(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	darkskyAPIKey := os.Getenv("DARKSKY_API_KEY")
 	coordinates := params[0].Value
