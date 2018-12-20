@@ -26,6 +26,21 @@ func GetLocation(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.Write([]byte(resp.String()))
 }
 
+// GetForecast returns forecast data based on latitude and longitude
+func GetForecast(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+
+	darkskyAPIKey := os.Getenv("DARKSKY_API_KEY")
+	coordinates := params[0].Value
+	resp, err := grequests.Get("https://api.darksky.net/forecast/"+darkskyAPIKey+"/"+coordinates+"?units=auto", nil)
+
+	if err != nil {
+		log.Fatalln("Unable to make request: ", err)
+	}
+
+	w.Write([]byte(resp.String()))
+}
+
 func main() {
 	err := godotenv.Load()
 	if err != nil {
@@ -33,6 +48,7 @@ func main() {
 	}
 	router := httprouter.New()
 	router.GET("/get/location", GetLocation)
+	router.GET("/get/forecast/:coordinates", GetForecast)
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
