@@ -53,5 +53,6 @@ func main() {
 	router.GET("/get/location", GetLocation)
 	router.GET("/get/forecast/:coordinates", GetForecast)
 
-	log.Fatal(http.ListenAndServe(":8080", router))
+	PORT := os.Getenv("PORT")
+	log.Fatal(http.ListenAndServe(":"+PORT, router))
 }
